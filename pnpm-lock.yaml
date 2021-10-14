@@ -1,12 +1,14 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@sveltejs/adapter-static': ^1.0.0-next.21
   '@sveltejs/kit': next
   '@typescript-eslint/eslint-plugin': ^4.31.1
   '@typescript-eslint/parser': ^4.31.1
   eslint: ^7.32.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-svelte3: ^3.2.1
+  i18n-iso-countries: ^6.8.0
   node-fetch: ^3.0.0
   prettier: ^2.4.1
   prettier-plugin-svelte: ^2.4.0
@@ -19,6 +21,8 @@ specifiers:
   vite-plugin-windicss: ^0.16.0-beta.23
 
 dependencies:
+  '@sveltejs/adapter-static': 1.0.0-next.21
+  i18n-iso-countries: 6.8.0
   node-fetch: 3.0.0
   svelte-select: 4.4.3
   vite-plugin-windicss: 0.16.0-beta.23
@@ -121,6 +125,10 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.0
     dev: true
+
+  /@sveltejs/adapter-static/1.0.0-next.21:
+    resolution: {integrity: sha512-B4+QoUVAaANKx+mHntG8SqF45zbj3Ct4Akg/cGauo6COyfKZRhO5OsMa+wPuT2TKJBZC4eEDK0p+p9nyQBkxKQ==}
+    dev: false
 
   /@sveltejs/kit/1.0.0-next.183_svelte@3.43.2:
     resolution: {integrity: sha512-XS115RLu8mQk0wZ33BF6sKHEQD8BUFhErfxJhEkXoR4m2bW1h1JBLKHaZ1qnG9eAPkalmccCXDMxJjuYVCh/oQ==}
@@ -505,6 +513,10 @@ packages:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
     dev: true
+
+  /diacritics/1.3.0:
+    resolution: {integrity: sha1-PvqHMj67hj5mls67AILUj/PW96E=}
+    dev: false
 
   /dir-glob/3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -991,6 +1003,13 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
+
+  /i18n-iso-countries/6.8.0:
+    resolution: {integrity: sha512-jJs/+CA6+VUICFxqGcB0vFMERGfhfvyNk+8Vb9EagSZkl7kSpm/kT0VyhvzM/zixDWEV/+oN9L7v/GT9BwzoGg==}
+    engines: {node: '>= 10'}
+    dependencies:
+      diacritics: 1.3.0
+    dev: false
 
   /ignore/4.0.6:
     resolution: {integrity: sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==}
