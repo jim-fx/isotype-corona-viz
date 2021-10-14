@@ -7,6 +7,7 @@ const data = new Promise((res, rej) => {
 		console.log("Loaded Data", rawData.length)
 		const json = JSON.parse(rawData);
 		console.log("Parsed data", Object.keys(json).length);
+		console.log("Data Keys", Object.keys(json))
 		res(json);
 	});
 });
