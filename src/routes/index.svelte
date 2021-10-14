@@ -13,22 +13,23 @@
 <script lang="ts">
 	import Select from 'svelte-select';
 	import * as api from '$lib/client-api';
-	import { isLoading,selectedCountries } from '$lib/stores';
+	import { isLoading, selectedCountries } from '$lib/stores';
+	import getCountryName from '$lib/getCountryName';
 
 	export let allCountries;
 
 	let dataSets = [
 		{ value: 'deaths', label: 'Deaths' },
-		{ value: 'vaccinations', label: 'Vaccinations' },
+		{ value: 'vaccinations', label: 'Vaccinations' }
 	];
 
-	let locations = allCountries.map((c: string) => ({ value: c, label: c }));
+	let locations = allCountries.map((c: string) => ({ value: c, label: getCountryName(c) }));
 
 	let leftValue = { value: 'vaccinations', label: 'Vaccinations' };
 	let rightValue = { value: 'vaccinations', label: 'Vaccinations' };
 
-	$: selectedCountriesLabels = $selectedCountries.map(v => v.value);
-	$: countries = allCountries.filter((c) => {
+	$: selectedCountriesLabels = $selectedCountries && $selectedCountries.map((v) => v.value);
+	$: countries = selectedCountriesLabels && allCountries.filter((c:string) => {
 		return selectedCountriesLabels.includes(c);
 	});
 </script>
@@ -48,7 +49,7 @@
 
 	<div class="center" style="width: 200px">
 		<div class="center-select">
-		<Select items={locations} isMulti bind:value={$selectedCountries} />
+			<Select items={locations} isMulti bind:value={$selectedCountries} />
 		</div>
 	</div>
 
@@ -66,13 +67,14 @@
 </div>
 
 <style>
-
 	.center-select {
-		transform: translateX(-50%)	
+		transform: translateX(-50%);
 	}
 
-	.left,.right,.center{
-			padding-top: 50px
+	.left,
+	.right,
+	.center {
+		padding-top: 50px;
 	}
 
 	.left {
