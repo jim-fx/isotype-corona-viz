@@ -22,13 +22,14 @@
 
 	let dataSets = [
 		{ value: 'deaths', label: 'Deaths' },
-		{ value: 'vaccinations', label: 'Vaccinations' }
+		{ value: 'vaccinations', label: 'Vaccinations' },
+		{ value: 'smokers', label: 'Smokers' }
 	];
 
 	let locations = allCountries.map((c: string) => ({ value: c, label: getCountryName(c) }));
 
-	let _leftValue = { value: 'vaccinations', label: 'Vaccinations' };
-	let _rightValue = { value: 'vaccinations', label: 'Vaccinations' };
+	let _leftValue = dataSets[0]; 
+	let _rightValue = dataSets[0];
 
 	$: leftValue = _leftValue && _leftValue.value;
 	$: rightValue = _rightValue && _rightValue.value;
@@ -61,7 +62,7 @@
 <div class="grid grid-cols-3 auto-rows-min" style="grid-template-columns: 1fr 0px 1fr;">
 	<div class="left">
 		<div class="select-box">
-			<Select items={dataSets} bind:value={_leftValue} />
+			<Select items={dataSets} bind:value={_leftValue} isClearable={false}/>
 		</div>
 	</div>
 
@@ -73,25 +74,29 @@
 
 	<div class="right">
 		<div class="select-box">
-			<Select items={dataSets} bind:value={_rightValue} />
+			<Select items={dataSets} bind:value={_rightValue} isClearable={false}/>
 		</div>
 	</div>
 
-	{#await countriesPromise then countries}
-		{#each countries as country}
-			<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min">
-				<DataView />
-			</div>
-			<p
-				class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5"
-				style="transform:translateX(-50%)"
-			>
-				{getCountryName(country.id)}
-			</p>
-			<div class="w-full text-center overflow-hidden mx-auto w-min">
-				<DataView />
-			</div>
-		{/each}
+	{#await countriesPromise}
+		<p>Loooading...</p>
+	{:then countries}
+		{#if countries && countries.length}
+			{#each countries as country}
+				<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min">
+					<DataView />
+				</div>
+				<p
+					class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5"
+					style="transform:translateX(-50%)"
+				>
+					{getCountryName(country.id)}
+				</p>
+				<div class="w-full text-center overflow-hidden mx-auto w-min">
+					<DataView />
+				</div>
+			{/each}
+		{/if}
 	{/await}
 </div>
 
@@ -100,11 +105,15 @@
 		transform: translateX(-50%);
 	}
 
+	h1{
+		text-transform: uppercase;
+	}
+
+
 	.left,
 	.right,
 	.center {
 		padding-top: 50px;
-		z-index: 99;
 		margin-bottom: 20px;
 	}
 
@@ -124,15 +133,14 @@
 
 	.select-box {
 		margin: 0 auto;
+		z-index: 99;
 		max-width: 200px;
 		--border: none;
 		--background: black;
-    --borderRadius: 20px;
+		--borderRadius: 20px;
 	}
 
-	.select-box :global(.selectedItem){
+	.select-box :global(.selectedItem) {
 		color: white;
 	}
-
-
 </style>
