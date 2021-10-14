@@ -12,6 +12,7 @@ const config = {
 
 	kit: {
 		adapter: adapterStatic(),
+		appDir: "app",
 		paths: {
 			base: dev ? '' : '/isotype-corona-viz',
 		},
