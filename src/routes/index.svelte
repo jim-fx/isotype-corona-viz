@@ -13,27 +13,23 @@
 <script lang="ts">
 	import Select from 'svelte-select';
 	import * as api from '$lib/client-api';
-	import { isLoading } from '$lib/stores';
+	import { isLoading,selectedCountries } from '$lib/stores';
 
 	export let allCountries;
 
 	let dataSets = [
-		{ value: 'deaths', label: 'Chocolate' },
-		{ value: 'vaccinations', label: 'Pizza' },
-		{ value: 'cake', label: 'Cake' },
-		{ value: 'chips', label: 'Chips' },
-		{ value: 'ice-cream', label: 'Ice Cream' }
+		{ value: 'deaths', label: 'Deaths' },
+		{ value: 'vaccinations', label: 'Vaccinations' },
 	];
 
 	let locations = allCountries.map((c: string) => ({ value: c, label: c }));
 
-	let leftValue = { value: 'cake', label: 'Cake' };
-	let rightValue = { value: 'cake', label: 'Cake' };
-	let locationValue = [{ value: 'DE', label: 'DE' }];
+	let leftValue = { value: 'vaccinations', label: 'Vaccinations' };
+	let rightValue = { value: 'vaccinations', label: 'Vaccinations' };
 
-	$: selectedCountries = locationValue && locationValue.map((v) => v.value);
+	$: selectedCountriesLabels = $selectedCountries.map(v => v.value);
 	$: countries = allCountries.filter((c) => {
-		return selectedCountries.includes(c);
+		return selectedCountriesLabels.includes(c);
 	});
 </script>
 
@@ -52,7 +48,7 @@
 
 	<div class="center" style="width: 200px">
 		<div class="center-select">
-		<Select items={locations} isMulti bind:value={locationValue} />
+		<Select items={locations} isMulti bind:value={$selectedCountries} />
 		</div>
 	</div>
 
