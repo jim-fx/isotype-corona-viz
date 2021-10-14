@@ -4,7 +4,7 @@
 
 		return {
 			props: {
-				countries: await countries.json()
+				allCountries: await countries.json()
 			}
 		};
 	}
@@ -15,7 +15,7 @@
 	import * as api from '$lib/client-api';
 	import { isLoading } from '$lib/stores';
 
-	export let countries;
+	export let allCountries;
 
 	let dataSets = [
 		{ value: 'deaths', label: 'Chocolate' },
@@ -25,43 +25,68 @@
 		{ value: 'ice-cream', label: 'Ice Cream' }
 	];
 
-	let locations = countries.map((c:string) => ({value: c, label: c}))
+	let locations = allCountries.map((c: string) => ({ value: c, label: c }));
 
 	let leftValue = { value: 'cake', label: 'Cake' };
 	let rightValue = { value: 'cake', label: 'Cake' };
 	let locationValue = [{ value: 'DE', label: 'DE' }];
+
+	$: selectedCountries = locationValue && locationValue.map((v) => v.value);
+	$: countries = allCountries.filter((c) => {
+		return selectedCountries.includes(c);
+	});
 </script>
 
 {#if $isLoading}
 	<p>IsLoading</p>
 {/if}
 
-<h1 class="text-2xl font-bold text-center">The numbers of global Covid</h1>
+<h1 class="absolute text-4xl font-bold text-center w-screen">The numbers of global Covid</h1>
 
-<div class="grid grid-cols-3 grid-rows-2">
+<div class="grid grid-cols-3 grid-rows-2" style="grid-template-columns: 1fr 0px 1fr;">
 	<div class="left">
-		<Select items={dataSets} bind:value={leftValue} />
+		<div class="select-box">
+			<Select items={dataSets} bind:value={leftValue} />
+		</div>
 	</div>
 
-	<div class="center">
+	<div class="center" style="width: 200px">
+		<div class="center-select">
 		<Select items={locations} isMulti bind:value={locationValue} />
+		</div>
 	</div>
 
 	<div class="right">
-		<Select items={dataSets} bind:value={rightValue} />
+		<div class="select-box">
+			<Select items={dataSets} bind:value={rightValue} />
+		</div>
 	</div>
 
 	{#each countries as country}
-
-	<p>Left</p>
-	<p>{country}</p>
-	<p>Right</p>	
+		<p>Left</p>
+		<p>{country}</p>
+		<p>Right</p>
 	{/each}
-
-
 </div>
 
 <style>
-	h1 {
+
+	.center-select {
+		transform: translateX(-50%)	
+	}
+
+	.left,.right,.center{
+			padding-top: 50px
+	}
+
+	.left {
+		background-color: gray;
+		border-right: solid 5px black;
+		min-height: 100vh;
+	}
+
+	.select-box {
+		margin: 0 auto;
+		max-width: 200px;
 	}
 </style>
