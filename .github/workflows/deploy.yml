@@ -3,7 +3,7 @@ name: GitHub Actions Demo
 on: [push]
 
 jobs:
-  Github Pages:
+  Deploy_Github_Pages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
