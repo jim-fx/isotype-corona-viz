@@ -125,5 +125,14 @@
 	.select-box {
 		margin: 0 auto;
 		max-width: 200px;
+		--border: none;
+		--background: black;
+    --borderRadius: 20px;
 	}
+
+	.select-box :global(.selectedItem){
+		color: white;
+	}
+
+
 </style>
