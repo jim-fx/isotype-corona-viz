@@ -13,8 +13,10 @@
 <script lang="ts">
 	import Select from 'svelte-select';
 	import * as api from '$lib/client-api';
+	import type { DataSetType } from '$lib/types';
 	import { isLoading, selectedCountries } from '$lib/stores';
 	import getCountryName from '$lib/getCountryName';
+	import { DataView } from '$lib/components';
 
 	export let allCountries;
 
@@ -33,20 +35,21 @@
 
 	$: selectedCountriesLabels = $selectedCountries && $selectedCountries.map((v) => v.value);
 
-	type DataSetType = "death"|"vaccination"
-
-	async function createDataSet(countries:string[], left: DataSetType, right: DataSetType){
-		return countries.map(c => {
+	async function createDataSet(countries: string[], left: DataSetType, right: DataSetType) {
+		return countries.map((c) => {
 			return {
 				id: c,
 				left: Math.random(),
 				right: Math.random()
-			}
-		})
+			};
+		});
 	}
 
-	$: countriesPromise = selectedCountriesLabels && leftValue && rightValue && createDataSet(selectedCountriesLabels, leftValue, rightValue) 
-
+	$: countriesPromise =
+		selectedCountriesLabels &&
+		leftValue &&
+		rightValue &&
+		createDataSet(selectedCountriesLabels, leftValue, rightValue);
 </script>
 
 {#if $isLoading}
@@ -74,15 +77,22 @@
 		</div>
 	</div>
 
-	{#await countriesPromise}
-
-	{:then countries}
-	{#each countries as country}
-		<p class="w-full text-center">{country.left}</p>
-		<p class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5" style="transform:translateX(-50%)">{getCountryName(country.id)}</p>
-		<p class="w-full text-center">{country.right}</p>
-	{/each}
-	{/await }
+	{#await countriesPromise then countries}
+		{#each countries as country}
+			<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min">
+				<DataView />
+			</div>
+			<p
+				class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5"
+				style="transform:translateX(-50%)"
+			>
+				{getCountryName(country.id)}
+			</p>
+			<div class="w-full text-center overflow-hidden mx-auto w-min">
+				<DataView />
+			</div>
+		{/each}
+	{/await}
 </div>
 
 <style>
@@ -99,7 +109,7 @@
 	}
 
 	.grid::before {
-		content: "";
+		content: '';
 		position: fixed;
 		width: 50vw;
 		height: 100vh;
@@ -108,8 +118,8 @@
 		border-right: solid 5px black;
 	}
 
-	.grid{
-		min-height: 100vh
+	.grid {
+		min-height: 100vh;
 	}
 
 	.select-box {
