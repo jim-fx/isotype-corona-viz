@@ -37,6 +37,14 @@
 	$: selectedCountriesLabels = $selectedCountries && $selectedCountries.map((v) => v.value);
 
 	async function createDataSet(countries: string[], left: DataSetType, right: DataSetType) {
+
+		console.log(leftValue, rightValue);
+
+		const leftDataSet = await api.getDataSet(leftValue);
+		const rightDataSet = await api.getDataSet(rightValue);
+
+		console.log(leftDataSet, rightDataSet);
+
 		return countries.map((c) => {
 			return {
 				id: c,
@@ -88,7 +96,7 @@
 				</div>
 				<p
 					class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5"
-					style="transform:translateX(-50%)"
+					style="transform:translateX(-50%); z-index: -1"
 				>
 					{getCountryName(country.id)}
 				</p>

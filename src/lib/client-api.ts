@@ -3,16 +3,10 @@ import {isLoading} from "./stores";
 
 async function get(path:string){
 	isLoading.set(true);
-
-
 	const response = await fetch(path);
-
 	const json = await response.json();
-
 	isLoading.set(false);
-
 	return json;
-
 }
 
 export async function getCountries(){

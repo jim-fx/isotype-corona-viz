@@ -31,6 +31,7 @@ export async function getDeaths() {
 		});
 		result.push({country:key,death:totalDeath})
 	});
+	return result;
 }
 
 
@@ -47,6 +48,7 @@ export async function getTotalCases() {
 		result.push({country:key, totalCases:totalCases})
 	})
 	console.log(result)
+	return result;
 }
 
 export async function getCasesPerMillion() {
@@ -62,6 +64,7 @@ export async function getCasesPerMillion() {
 		result.push({country:key, cases_per_million:totalCases})
 	})
 	console.log(result)
+	return result;
 }
 
 export async function getDeathsPerMillion() {
@@ -77,6 +80,7 @@ export async function getDeathsPerMillion() {
 		result.push({country:key, deaths_per_million:totalCases})
 	})
 	console.log(result)
+	return result;
 }
 
 export async function getPopulationDensity() {
@@ -88,6 +92,7 @@ export async function getPopulationDensity() {
 		}
 	})
 	console.log(result);
+	return result;
 }
 
 export async function getSpecificDataByCountry(specificData:string) {
@@ -99,6 +104,7 @@ export async function getSpecificDataByCountry(specificData:string) {
 		}
 	})
 	console.log(result);
+	return result;
 }
 
 export async function getTotalDataFromEachDayByCountry(specificData:string) {
@@ -113,6 +119,7 @@ export async function getTotalDataFromEachDayByCountry(specificData:string) {
 		});
 		result.push({country:key, [specificData]:totalResult})
 	})
+	return result;
 }
 
 
