@@ -14,9 +14,9 @@ const allData = new Promise((res, rej) => {
 });
 
 export async function getCountries() {
-	getTotalCases()
+	getPopulationDensity()
+	//addTotalDataFromEachDayByCountry('new_deaths', 'deaths')
 	return Object.keys(await allData);
-	
 }
 
 export async function getDeaths() {
@@ -33,29 +33,86 @@ export async function getDeaths() {
 	});
 }
 
+
 export async function getTotalCases() {
 	let result = []
 	let dataSet = await allData
 	Object.keys(dataSet).forEach(key => {
 		let totalCases = 0;
 		dataSet[key].data.forEach(day => {
-			if(day.total_cases){
+			if(day.new_cases){
 				totalCases = totalCases + day.new_cases
 			}	
 		});
-		result.push({country:key, death:totalCases})
+		result.push({country:key, totalCases:totalCases})
 	})
 	console.log(result)
 }
 
-
-export async function addTotalDataFromEachDayByCountry() {
+export async function getCasesPerMillion() {
 	let result = []
 	let dataSet = await allData
 	Object.keys(dataSet).forEach(key => {
-		let currentResult = 0;
+		let totalCases = 0;
 		dataSet[key].data.forEach(day => {
-			if(day.)
-		})
+			if(day.new_cases_per_million){
+				totalCases = totalCases + day.new_cases_per_million
+			}	
+		});
+		result.push({country:key, cases_per_million:totalCases})
+	})
+	console.log(result)
+}
+
+export async function getDeathsPerMillion() {
+	let result = []
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		let totalCases = 0;
+		dataSet[key].data.forEach(day => {
+			if(day.new_deaths_per_million){
+				totalCases = totalCases + day.new_deaths_per_million
+			}	
+		});
+		result.push({country:key, deaths_per_million:totalCases})
+	})
+	console.log(result)
+}
+
+export async function getPopulationDensity() {
+	let result = [];
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		if(dataSet[key].population_density){
+			result.push({country:key, population_density: dataSet[key].population_density})
+		}
+	})
+	console.log(result);
+}
+
+export async function getSpecificDataByCountry(specificData:string) {
+	let result = [];
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		if(dataSet[key][specificData]){
+			result.push({country:key, tag: dataSet[key][specificData]})
+		}
+	})
+	console.log(result);
+}
+
+export async function getTotalDataFromEachDayByCountry(specificData:string) {
+	let result = []
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		let totalResult = 0;
+		dataSet[key].data.forEach(day => {
+			if(day[specificData]){
+				totalResult = totalResult + day[specificData]
+			}
+		});
+		result.push({country:key, [specificData]:totalResult})
 	})
 }
+
+
