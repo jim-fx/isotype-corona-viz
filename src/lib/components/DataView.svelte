@@ -10,16 +10,16 @@
 	$: amount = new Array(maxAmount - minAmount);
 
   function getIconType(t:string):icons{
-		return "cigarette";
+		return "person";
 	}
 
 	$: iconType =  getIconType(type);
 </script>
 
 <div class="flex">
-{#each amount as i}
-	<div class="w-10 h-10">
-		<Icon type={iconType} />
-	</div>
-{/each}
+	{#each amount as i}
+		<div class="w-10 h-10">
+			<Icon type={iconType} />
+		</div>
+	{/each}
 </div>
