@@ -25,13 +25,28 @@
 
 	let locations = allCountries.map((c: string) => ({ value: c, label: getCountryName(c) }));
 
-	let leftValue = { value: 'vaccinations', label: 'Vaccinations' };
-	let rightValue = { value: 'vaccinations', label: 'Vaccinations' };
+	let _leftValue = { value: 'vaccinations', label: 'Vaccinations' };
+	let _rightValue = { value: 'vaccinations', label: 'Vaccinations' };
+
+	$: leftValue = _leftValue && _leftValue.value;
+	$: rightValue = _rightValue && _rightValue.value;
 
 	$: selectedCountriesLabels = $selectedCountries && $selectedCountries.map((v) => v.value);
-	$: countries = selectedCountriesLabels && allCountries.filter((c:string) => {
-		return selectedCountriesLabels.includes(c);
-	});
+
+	type DataSetType = "death"|"vaccination"
+
+	async function createDataSet(countries:string[], left: DataSetType, right: DataSetType){
+		return countries.map(c => {
+			return {
+				id: c,
+				left: Math.random(),
+				right: Math.random()
+			}
+		})
+	}
+
+	$: countriesPromise = selectedCountriesLabels && leftValue && rightValue && createDataSet(selectedCountriesLabels, leftValue, rightValue) 
+
 </script>
 
 {#if $isLoading}
@@ -40,10 +55,10 @@
 
 <h1 class="absolute text-4xl font-bold text-center w-screen">The numbers of global Covid</h1>
 
-<div class="grid grid-cols-3 grid-rows-2" style="grid-template-columns: 1fr 0px 1fr;">
+<div class="grid grid-cols-3 auto-rows-min" style="grid-template-columns: 1fr 0px 1fr;">
 	<div class="left">
 		<div class="select-box">
-			<Select items={dataSets} bind:value={leftValue} />
+			<Select items={dataSets} bind:value={_leftValue} />
 		</div>
 	</div>
 
@@ -55,15 +70,19 @@
 
 	<div class="right">
 		<div class="select-box">
-			<Select items={dataSets} bind:value={rightValue} />
+			<Select items={dataSets} bind:value={_rightValue} />
 		</div>
 	</div>
 
+	{#await countriesPromise}
+
+	{:then countries}
 	{#each countries as country}
-		<p>Left</p>
-		<p>{country}</p>
-		<p>Right</p>
+		<p class="w-full text-center">{country.left}</p>
+		<p class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5" style="transform:translateX(-50%)">{getCountryName(country.id)}</p>
+		<p class="w-full text-center">{country.right}</p>
 	{/each}
+	{/await }
 </div>
 
 <style>
@@ -75,12 +94,22 @@
 	.right,
 	.center {
 		padding-top: 50px;
+		z-index: 99;
+		margin-bottom: 20px;
 	}
 
-	.left {
+	.grid::before {
+		content: "";
+		position: fixed;
+		width: 50vw;
+		height: 100vh;
+		z-index: -1;
 		background-color: gray;
 		border-right: solid 5px black;
-		min-height: 100vh;
+	}
+
+	.grid{
+		min-height: 100vh
 	}
 
 	.select-box {
