@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 
 	export async function load({fetch}){
-		const response = await fetch("/data");
+		const response = await fetch("/data/countries");
 
 		return {
 			props:{
@@ -13,12 +13,11 @@
 </script>
 
 <script>
-
 	export let data;
-
 	console.log(data);
-
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+
+<pre><code>
+	{JSON.stringify(data)}
+</code></pre>
