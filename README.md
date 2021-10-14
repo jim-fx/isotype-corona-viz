@@ -11,9 +11,9 @@
 ~~wget https://covid.ourworldindata.org/data/owid-covid-data.json
 ~~```
 
-~~Or go to [The DataSet](https://github.com/owid/covid-19-data/tree/master/public/data)
+~~Or go to [The DataSet](https://github.com/owid/covid-19-data/tree/master/public/data)~~
 
-~~Rightlick on "json" > Save As > Save in the "isotype-corona-viz" folder
+~~Rightlick on "json" > Save As > Save in the "isotype-corona-viz" folder~~
 
 ## Step 2
 

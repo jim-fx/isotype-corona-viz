@@ -1,5 +1,5 @@
-export async function get(){
+import { get } from "$lib/data";
 
-
+export async function get() {
 
 }
