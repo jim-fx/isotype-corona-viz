@@ -14,8 +14,8 @@ const allData = new Promise((res, rej) => {
 });
 
 export async function getCountries() {
-	getPopulationDensity()
-	//addTotalDataFromEachDayByCountry('new_deaths', 'deaths')
+	getTotalDataFromEachDayByCountry('new_deaths');
+	//getPopulationDensity()
 	return Object.keys(await allData);
 }
 
