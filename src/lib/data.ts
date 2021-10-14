@@ -14,8 +14,6 @@ const allData = new Promise((res, rej) => {
 });
 
 export async function getCountries() {
-	getTotalDataFromEachDayByCountry('new_deaths');
-	//getPopulationDensity()
 	return Object.keys(await allData);
 }
 
@@ -79,12 +77,53 @@ export async function getDeathsPerMillion() {
 	console.log(result)
 }
 
+export async function getTotalVacinations() {
+	let result = []
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		let totalCases = 0;
+		dataSet[key].data.forEach(day => {
+			if(day.new_vaccinations_smoothed){
+				totalCases = totalCases + day.new_vaccinations_smoothed
+			}	
+		});
+		result.push({country:key, total_vaccinations:totalCases})
+	})
+	console.log(result)
+}
+
+export async function getVacinationsPerMillion() {
+	let result = []
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		let totalCases = 0;
+		dataSet[key].data.forEach(day => {
+			if(day.new_vaccinations_smoothed_per_million){
+				totalCases = totalCases + day.new_vaccinations_smoothed_per_million
+			}	
+		});
+		result.push({country:key, vaccinations_per_million:totalCases})
+	})
+	console.log(result)
+}
+
 export async function getPopulationDensity() {
 	let result = [];
 	let dataSet = await allData
 	Object.keys(dataSet).forEach(key => {
 		if(dataSet[key].population_density){
 			result.push({country:key, population_density: dataSet[key].population_density})
+		}
+	})
+	console.log(result);
+}
+
+export async function getGDPPerCapita() {
+	let result = [];
+	let dataSet = await allData
+	Object.keys(dataSet).forEach(key => {
+		if(dataSet[key].gdp_per_capita){
+			result.push({country:key, gdp_per_capita: dataSet[key].gdp_per_capita})
 		}
 	})
 	console.log(result);
