@@ -16,6 +16,8 @@ export async function getDataSet(dataSetId:string, countries: string[]){
 
 	if(browser && window.location.href.includes("github")){
 		url = "/isotype-corona-viz"+url
+		console.log("Diiirty fix")
+		console.log(url)
 	}
 
 	let data = dataSets[dataSetId];

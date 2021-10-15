@@ -91,6 +91,7 @@ export async function getTotalVacinations() {
 		result.push({country:key, total_vaccinations:totalCases})
 	})
 	console.log(result)
+	return result
 }
 
 export async function getVacinationsPerMillion() {
@@ -106,6 +107,7 @@ export async function getVacinationsPerMillion() {
 		result.push({country:key, vaccinations_per_million:totalCases})
 	})
 	console.log(result)
+	return result
 }
 
 export async function getPopulationDensity() {
@@ -128,6 +130,7 @@ export async function getGDPPerCapita() {
 		}
 	})
 	console.log(result);
+	return result
 }
 
 export async function getSpecificDataByCountry(specificData:string) {

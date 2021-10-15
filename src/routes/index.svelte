@@ -25,9 +25,10 @@
 		{ value: 'total_cases', label: 'Total Cases' },
 		{ value: 'cases_per_million', label: 'Cases Per Million' },
 		{ value: 'deaths_per_million', label: 'Deaths Per Million' },
-		{ value: 'population_density', label: 'Population Density' }
-		/*{ value: 'vaccinations', label: 'Vaccinations' },*/
-		/*{ value: 'smokers', label: 'Smokers' }*/
+		{ value: 'population_density', label: 'Population Density' },
+		{ value: 'gdp_per_capita', label: 'GDP Per Capita' },
+		{ value: 'total_vaccinations', label: 'Total Vaccinations' },
+		{ value: 'vaccinations_per_million', label: 'Vaccinations per Million' }
 	];
 
 	let locations = allCountries.map((c: string) => ({ value: c, label: getCountryName(c) }));
@@ -122,7 +123,7 @@
 	{:then dataset}
 		{#if dataset && dataset.countries && dataset.countries.length}
 			{#each dataset.countries as country}
-				<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min" style="width: 40vw; margin-bottom: 40px">
+				<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min" style="width: 40vw; margin-bottom: 40px;">
 					<DataView
 						type={leftValue}
 						value={country.left}
