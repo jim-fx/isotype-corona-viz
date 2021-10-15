@@ -14,6 +14,9 @@
 
 
 	function getIconType(t: string): icons {
+
+		if(type.includes("death")) return "tombstone"
+
 		return 'person';
 	}
 
@@ -39,7 +42,7 @@
 
 	<div class="flex">
 		{#each new Array(amount) as _,i}
-			<div class="w-10 h-10" class:filled={i/amount > percent}>
+			<div class="w-10 h-10 p-2" class:filled={i/amount > percent}>
 				<Icon type={iconType} filled={i/amount < percent} />
 			</div>
 		{/each}
