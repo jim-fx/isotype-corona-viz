@@ -18,59 +18,88 @@
 	import getCountryName from '$lib/getCountryName';
 	import { DataView } from '$lib/components';
 
-	export let allCountries;
+	export let allCountries: any[];
 
 	let dataSets = [
 		{ value: 'deaths', label: 'Deaths' },
-		{ value: 'vaccinations', label: 'Vaccinations' },
-		{ value: 'smokers', label: 'Smokers' }
+		{ value: 'total_cases', label: 'Total Cases' },
+		{ value: 'cases_per_million', label: 'Cases Per Million' },
+		{ value: 'deaths_per_million', label: 'Deaths Per Million' },
+		{ value: 'population_density', label: 'Population Density' }
+		/*{ value: 'vaccinations', label: 'Vaccinations' },*/
+		/*{ value: 'smokers', label: 'Smokers' }*/
 	];
 
 	let locations = allCountries.map((c: string) => ({ value: c, label: getCountryName(c) }));
 
-	let _leftValue = dataSets[0]; 
-	let _rightValue = dataSets[0];
+	interface SelectValue {
+		value: DataSetType;
+		label: string;
+	}
 
-	$: leftValue = _leftValue && _leftValue.value;
-	$: rightValue = _rightValue && _rightValue.value;
+	let _leftValue: SelectValue = dataSets[0] as SelectValue;
+	let _rightValue: SelectValue = dataSets[0] as SelectValue;
+
+	$: leftValue = _leftValue && (_leftValue.value as DataSetType);
+	$: rightValue = _rightValue && (_rightValue.value as DataSetType);
 
 	$: selectedCountriesLabels = $selectedCountries && $selectedCountries.map((v) => v.value);
 
 	async function createDataSet(countries: string[], left: DataSetType, right: DataSetType) {
-
 		console.log(leftValue, rightValue);
 
-		const leftDataSet = await api.getDataSet(leftValue);
-		const rightDataSet = await api.getDataSet(rightValue);
+		const leftDataSet = await api.getDataSet(leftValue, countries);
+		const rightDataSet = await api.getDataSet(rightValue, countries);
 
-		console.log(leftDataSet, rightDataSet);
+		const leftValues = leftDataSet.map((v) => v[leftValue]);
+		const rightValues = rightDataSet.map((v) => v[rightValue]);
 
-		return countries.map((c) => {
-			return {
-				id: c,
-				left: Math.random(),
-				right: Math.random()
-			};
-		});
+		const leftMaxValue = Math.max(...leftValues);
+		const leftMinValue = Math.min(...leftValues);
+		const rightMaxValue = Math.max(...rightValues);
+		const rightMinValue = Math.min(...rightValues);
+
+		console.log('LeftDataSet', leftDataSet);
+		console.log('RightDataSet', rightDataSet);
+
+		const dataSet = {
+			leftMinValue,
+			leftMaxValue,
+			rightMinValue,
+			rightMaxValue,
+			countries: countries.map((c) => {
+
+				const l = leftDataSet.find((d) => d.country === c);
+				const r = rightDataSet.find((d) => d.country === c);
+
+				return {
+					id: c,
+					left: l&&l[leftValue],
+					right: r&&r[rightValue]
+				};
+			})
+		};
+
+		console.log("DataSet", dataSet);
+		console.log("-----------------------")
+
+		return dataSet;
 	}
 
-	$: countriesPromise =
+	$: dataSetPromise =
 		selectedCountriesLabels &&
 		leftValue &&
 		rightValue &&
 		createDataSet(selectedCountriesLabels, leftValue, rightValue);
 </script>
 
-{#if $isLoading}
-	<p>IsLoading</p>
-{/if}
 
 <h1 class="absolute text-4xl font-bold text-center w-screen">The numbers of global Covid</h1>
 
 <div class="grid grid-cols-3 auto-rows-min" style="grid-template-columns: 1fr 0px 1fr;">
 	<div class="left">
 		<div class="select-box">
-			<Select items={dataSets} bind:value={_leftValue} isClearable={false}/>
+			<Select items={dataSets} bind:value={_leftValue} isClearable={false} />
 		</div>
 	</div>
 
@@ -82,17 +111,24 @@
 
 	<div class="right">
 		<div class="select-box">
-			<Select items={dataSets} bind:value={_rightValue} isClearable={false}/>
+			<Select items={dataSets} bind:value={_rightValue} isClearable={false} />
 		</div>
 	</div>
 
-	{#await countriesPromise}
+	{#await dataSetPromise}
+		<div></div>
 		<p>Loooading...</p>
-	{:then countries}
-		{#if countries && countries.length}
-			{#each countries as country}
-				<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min">
-					<DataView />
+		<div></div>
+	{:then dataset}
+		{#if dataset && dataset.countries && dataset.countries.length}
+			{#each dataset.countries as country}
+				<div class="w-full text-center max-w-full overflow-hidden mx-auto w-min" style="width: 40vw; margin-bottom: 40px">
+					<DataView
+						type={leftValue}
+						value={country.left}
+						minAmount={dataset.leftMinValue}
+						maxAmount={dataset.leftMaxValue}
+					/>
 				</div>
 				<p
 					class="bg-black min-w-max h-min p-2 rounded-xl text-white mb-5"
@@ -100,12 +136,25 @@
 				>
 					{getCountryName(country.id)}
 				</p>
-				<div class="w-full text-center overflow-hidden mx-auto w-min">
-					<DataView />
+				<div class="w-full text-center overflow-hidden mx-auto w-min" style="width: 40vw">
+					{#if country.right}
+						<DataView
+							type={rightValue}
+							value={country.right}
+							minAmount={dataset.rightMinValue}
+							maxAmount={dataset.rightMaxValue}
+						/>
+					{:else}
+						<p>No Data</p>
+					{/if}
 				</div>
 			{/each}
+		{:else}
+			<div></div>
+			<p>No Data</p>
 		{/if}
 	{/await}
+
 </div>
 
 <style>
@@ -113,10 +162,9 @@
 		transform: translateX(-50%);
 	}
 
-	h1{
+	h1 {
 		text-transform: uppercase;
 	}
-
 
 	.left,
 	.right,

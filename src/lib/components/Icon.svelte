@@ -1,8 +1,10 @@
 <script context="module" lang="ts">
 	
-	import * as icons from "./icons";
+	import * as _icons from "./icons";
 
-	export type icons = keyof typeof icons;
+	export type icons = keyof typeof _icons;
+
+	export let filled = true;
 
 </script>
 
@@ -10,5 +12,15 @@
 	export let type: icons;
 </script>
 
+<div>
+{@html _icons[type]}
+</div>
 
-{@html icons[type]}
+<style>
+	div {
+		height: 100%;
+	}
+	div>:global(svg) {
+		height: 100%;
+	}
+</style>

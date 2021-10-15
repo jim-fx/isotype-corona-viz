@@ -9,14 +9,14 @@ async function get(path:string){
 	return json;
 }
 
-export async function getCountries(){
-	if(dataSets["countries"]) return dataSets["countries"];
-	dataSets["countries"] = await get("/data/countries");
-	return dataSets["countries"]
-}
+export async function getDataSet(dataSetId:string, countries: string[]){
+	let data = dataSets[dataSetId];
+	if(data) return data;
+	data = await get("/data/"+dataSetId);
 
-export async function getDataSet(dataSetId:string){
-	if(dataSets[dataSetId]) return dataSets[dataSetId];
-	dataSets[dataSetId] = await get("/data/"+dataSetId);
-	return dataSets[dataSetId]
+	if(countries && countries.length){
+		return data.filter(d => countries.includes(d.country));
+	}
+
+	return data
 }
