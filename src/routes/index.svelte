@@ -2,6 +2,15 @@
 	export async function load({ fetch }) {
 		const countries = await fetch('/data/countries');
 
+		fetch("/data/deaths")
+		 fetch("/data/total_cases")
+		 fetch("/data/cases_per_million")
+		 fetch("/data/deaths_per_million")
+		 fetch("/data/population_density")
+		 fetch("/data/gdp_per_capita")
+		 fetch("/data/total_vaccinations")
+		 fetch("/data/vaccinations_per_million")
+
 		return {
 			props: {
 				allCountries: await countries.json()
