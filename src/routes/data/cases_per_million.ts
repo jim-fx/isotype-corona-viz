@@ -1,6 +1,5 @@
 import * as data from "$lib/data";
 
-export async function get({ query }) {
-	const totalCases = await data.getCasesPerMillion()
-	return { body: totalCases };
+export async function get() {
+	return { body: await data.getCasesPerMillion() };
 }

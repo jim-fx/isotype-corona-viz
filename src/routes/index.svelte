@@ -1,16 +1,19 @@
 <script context="module" lang="ts">
+
+	const dataSets = [
+		{ value: 'deaths', label: 'Deaths' },
+		{ value: 'total_cases', label: 'Total Cases' },
+		{ value: 'cases_per_million', label: 'Cases Per Million' },
+		{ value: 'deaths_per_million', label: 'Deaths Per Million' },
+		{ value: 'population_density', label: 'Population Density' },
+		{ value: 'gdp_per_capita', label: 'GDP Per Capita' },
+		{ value: 'total_vaccinations', label: 'Total Vaccinations' },
+		{ value: 'vaccinations_per_million', label: 'Vaccinations per Million' }
+	];
+
 	export async function load({ fetch }) {
 		const countries = await fetch('/data/countries');
-
-		fetch("/data/deaths")
-		 fetch("/data/total_cases")
-		 fetch("/data/cases_per_million")
-		 fetch("/data/deaths_per_million")
-		 fetch("/data/population_density")
-		 fetch("/data/gdp_per_capita")
-		 fetch("/data/total_vaccinations")
-		 fetch("/data/vaccinations_per_million")
-
+		dataSets.forEach(d => fetch("/data/"+d.value))
 		return {
 			props: {
 				allCountries: await countries.json()
@@ -27,18 +30,7 @@
 	import getCountryName from '$lib/getCountryName';
 	import { DataView } from '$lib/components';
 
-	export let allCountries: any[];
-
-	let dataSets = [
-		{ value: 'deaths', label: 'Deaths' },
-		{ value: 'total_cases', label: 'Total Cases' },
-		{ value: 'cases_per_million', label: 'Cases Per Million' },
-		{ value: 'deaths_per_million', label: 'Deaths Per Million' },
-		{ value: 'population_density', label: 'Population Density' },
-		{ value: 'gdp_per_capita', label: 'GDP Per Capita' },
-		{ value: 'total_vaccinations', label: 'Total Vaccinations' },
-		{ value: 'vaccinations_per_million', label: 'Vaccinations per Million' }
-	];
+	export let allCountries: string[];
 
 	let locations = allCountries.map((c: string) => ({ value: c, label: getCountryName(c) }));
 
