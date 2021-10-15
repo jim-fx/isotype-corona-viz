@@ -12,7 +12,7 @@ async function get(path:string){
 
 export async function getDataSet(dataSetId:string, countries: string[]){
 
-	let url = "/data"+dataSetId
+	let url = "/data/"+dataSetId
 
 	if(browser && window.location.href.includes("github")){
 		url = "/isotype-corona-viz"+url
@@ -22,7 +22,7 @@ export async function getDataSet(dataSetId:string, countries: string[]){
 
 	let data = dataSets[dataSetId];
 	if(data) return data;
-	data = await get("/data/"+dataSetId);
+	data = await get(url);
 
 	if(countries && countries.length){
 		return data.filter(d => countries.includes(d.country));
