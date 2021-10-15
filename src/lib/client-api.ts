@@ -1,4 +1,5 @@
 const dataSets = {};
+import { browser } from "$app/env";
 import {isLoading} from "./stores";
 
 async function get(path:string){
@@ -10,6 +11,13 @@ async function get(path:string){
 }
 
 export async function getDataSet(dataSetId:string, countries: string[]){
+
+	let url = "/data"+dataSetId
+
+	if(browser && window.location.href.includes("github")){
+		url = "/isotype-corona-viz"+url
+	}
+
 	let data = dataSets[dataSetId];
 	if(data) return data;
 	data = await get("/data/"+dataSetId);
